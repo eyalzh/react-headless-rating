@@ -62,7 +62,12 @@ const RatingContainer = forwardRef(function Container(
 
   return (
     <RatingContext.Provider value={ratingContext}>
-      <div className={props.className} style={props.style} ref={ref}>
+      <div
+        className={props.className}
+        style={props.style}
+        ref={ref}
+        role="radiogroup"
+      >
         {starChildren}
       </div>
     </RatingContext.Provider>
@@ -115,18 +120,27 @@ const Star = forwardRef(function Star(
     !context?.readonly && context?.setCurrentSelection(null);
   };
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      !context?.readonly && context?.setCurrentRating(starIndex);
+    }
+  };
+
   return (
     <div
       role="radio"
       aria-label={props.label}
       aria-checked={starState === "selected"}
-      aria-readonly={context?.readonly ? "true" : "false"}
+      aria-readonly={!!context?.readonly}
+      tabIndex={0}
       id={fullInternalId}
       className={finalClassName}
       style={props.style}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseOut={onMouseOut}
+      onKeyDown={onKeyDown}
       ref={ref}
     >
       {props.children}
