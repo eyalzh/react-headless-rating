@@ -1,6 +1,7 @@
 import React, {
   PropsWithChildren,
   createContext,
+  forwardRef,
   useContext,
   useEffect,
   useId,
@@ -35,7 +36,10 @@ interface RatingContext {
 const RatingContext = createContext<RatingContext | null>(null);
 const StarContext = createContext<number | null>(null);
 
-function RatingContainer(props: RatingContainerProps) {
+const RatingContainer = forwardRef(function Container(
+  props: RatingContainerProps,
+  ref: React.Ref<HTMLDivElement>
+) {
   const [currentSelection, setCurrentSelection] = React.useState<number | null>(
     null
   );
@@ -58,14 +62,17 @@ function RatingContainer(props: RatingContainerProps) {
 
   return (
     <RatingContext.Provider value={ratingContext}>
-      <div className={props.className} style={props.style}>
+      <div className={props.className} style={props.style} ref={ref}>
         {starChildren}
       </div>
     </RatingContext.Provider>
   );
-}
+});
 
-function Star(props: StarProps) {
+const Star = forwardRef(function Star(
+  props: StarProps,
+  ref: React.Ref<HTMLDivElement>
+) {
   const context = useContext(RatingContext);
   const starIndex = useContext(StarContext);
   const [starState, setStarState] = React.useState<StarState>("unselected");
@@ -120,11 +127,12 @@ function Star(props: StarProps) {
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseOut={onMouseOut}
+      ref={ref}
     >
       {props.children}
     </div>
   );
-}
+});
 
 export const Rating = Object.assign(RatingContainer, {
   Star,
