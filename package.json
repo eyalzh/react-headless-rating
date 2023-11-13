@@ -1,11 +1,16 @@
 {
   "name": "react-headless-rating",
   "description": "React headless rating component",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "author": "<eyalzh@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "react",
+    "headless",
+    "rating"
+  ],
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "tsc --declaration --jsx react-jsx",
